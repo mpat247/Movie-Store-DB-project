@@ -11,8 +11,31 @@ const port = 3010
 var cors = require('cors');
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/getTables', async (req, res) => {
+  try {
+    conn = await oracledb.getConnection(config)
+
+    const result = await conn.execute(
+      `SELECT 
+      table_name
+  FROM
+      user_tables`,
+      []
+
+    )
+
+    console.log(result.rows[0])
+    res.send(result.rows)
+  } catch (err) {
+    console.log('Ouch!', err)
+  } finally {
+    if (conn) { // conn assignment worked, need to close
+      await conn.close()
+
+    }
+  }
+
+  res.send()
 })
 
 app.post('/drop', async (req, res) => {
@@ -55,183 +78,332 @@ app.post('/drop', async (req, res) => {
 app.put('/populateTables', async (req, res) => {
   try {
     conn = await oracledb.getConnection(config)
-    
-    const result = await conn.execute(
+    let promises = [];
+    promises.push(conn.execute(
       `INSERT INTO CUSTOMER
-      VALUES ('MARIO','ASDF','CANADA','MAR@ASD.COM','416 990 4664');
+      VALUES ('MARIO','ASDF','CANADA','MAR@ASD.COM','416 990 4664')`).catch(e => {
+        console.log("1", e);
+      }));
       
-      INSERT INTO CUSTOMER
-      VALUES ('JAMES','ASDF','CANADA','J@ASD.COM','416 552 5967');
+      promises.push(conn.execute(
+        `INSERT INTO CUSTOMER
+      VALUES ('JAMES','ASDF','CANADA','J@ASD.COM','416 552 5967')`).catch(e => {
+        console.log("2", e);
+      }));
       
-      INSERT INTO CUSTOMER
-      VALUES ('KELLY','ASDF','CANADA','K@ASD.COM','905 548 6894');
+      promises.push(conn.execute(
+        `INSERT INTO CUSTOMER
+      VALUES ('KELLY','ASDF','CANADA','K@ASD.COM','905 548 6894')`).catch(e => {
+        console.log("3", e);
+      }));
       
       
-      INSERT INTO TITLE 
-      VALUES ('1','The Purge',2012);
+      promises.push(conn.execute(
+        `INSERT INTO TITLE 
+      VALUES ('1','The Purge',2012)`).catch(e => {
+        console.log("4", e);
+      }));
       
-      INSERT INTO TITLE 
+      promises.push(conn.execute(
+        `INSERT INTO TITLE 
       VALUES
-      ('2','south park', 2002);
+      ('2','south park', 2002)`).catch(e => {
+        console.log("5", e);
+      }));
       
-      INSERT INTO TITLE 
+      promises.push(conn.execute(
+        `INSERT INTO TITLE 
       VALUES
-      ('3','wolf of wall street', 2017);
+      ('3','wolf of wall street', 2017)`).catch(e => {
+        console.log("6", e);
+      }));
       
-      INSERT INTO TITLE 
+      promises.push(conn.execute(
+        `INSERT INTO TITLE 
       VALUES
-      ('4','django',2011);
+      ('4','django',2011)`).catch(e => {
+        console.log("7", e);
+      }));
       
-      INSERT INTO TITLE 
+      promises.push(conn.execute(
+        `INSERT INTO TITLE 
       VALUES
-      ('5','simpsons',1999);
+      ('5','simpsons',1999)`).catch(e => {
+        console.log("8", e);
+      }));
       
-      INSERT INTO FAMOUSNAMES
-      VALUES('DICAPRIO','ACTOR');
+      promises.push(conn.execute(
+        `INSERT INTO FAMOUSNAMES
+      VALUES('DICAPRIO','ACTOR')`).catch(e => {
+        console.log("9", e);
+      }));
       
-      INSERT INTO FAMOUSNAMES
-      VALUES ('FOXX','ACTOR');
+      promises.push(conn.execute(
+        `INSERT INTO FAMOUSNAMES
+      VALUES ('FOXX','ACTOR')`).catch(e => {
+        console.log("10", e);
+      }));
       
-      INSERT INTO CONTRIBUTES
-      VALUES('1','3','DICAPRIO');
+      promises.push(conn.execute(
+        `INSERT INTO CONTRIBUTES
+      VALUES('1','3','DICAPRIO')`).catch(e => {
+        console.log("11", e);
+      }));
       
-      INSERT INTO CONTRIBUTES
-      VALUES ('2','4','FOXX');
+      promises.push(conn.execute(
+        `INSERT INTO CONTRIBUTES
+      VALUES ('2','4','FOXX')`).catch(e => {
+        console.log("12", e);
+      }));
       
-      INSERT INTO CONTRIBUTES
-      VALUES ('3','4','DICAPRIO');
+      promises.push(conn.execute(
+        `INSERT INTO CONTRIBUTES
+      VALUES ('3','4','DICAPRIO')`).catch(e => {
+        console.log("13", e);
+      }));
       
       
       
       
       
-      INSERT INTO TVSHOW
+      promises.push(conn.execute(
+        `INSERT INTO TVSHOW
       VALUES
-      ('2','SOUTH PARK', '2');
+      ('2','SOUTH PARK', '2')`).catch(e => {
+        console.log("14", e);
+      }));
       
-      INSERT INTO TVSHOW
+      promises.push(conn.execute(
+        `INSERT INTO TVSHOW
       VALUES
-      ('5','SIMPSONS', '4');
+      ('5','SIMPSONS', '4')`).catch(e => {
+        console.log("15", e);
+      }));
       
       
-      INSERT INTO SEASON(TITLE_ID, SEASON_ID, SEASON_NUM) 
-      VALUES ('2','1','1');
+      promises.push(conn.execute(
+        `INSERT INTO SEASON(TITLE_ID, SEASON_ID, SEASON_NUM) 
+      VALUES ('2','1','1')`).catch(e => {
+        console.log("16", e);
+      }));
       
-      INSERT INTO SEASON
-      VALUES ('2','2','2');
+      promises.push(conn.execute(
+        `INSERT INTO SEASON
+      VALUES ('2','2','2')`).catch(e => {
+        console.log("17", e);
+      }));
       
-      INSERT INTO SEASON
-      VALUES ('5','3','1');
+      promises.push(conn.execute(
+        `INSERT INTO SEASON
+      VALUES ('5','3','1')`).catch(e => {
+        console.log("18", e);
+      }));
       
-      INSERT INTO SEASON
-      VALUES ('5','4','2');
+      promises.push(conn.execute(
+        `INSERT INTO SEASON
+      VALUES ('5','4','2')`).catch(e => {
+        console.log("19", e);
+      }));
       
-      INSERT INTO SEASON
-      VALUES ('5','5','3');
+      promises.push(conn.execute(
+        `INSERT INTO SEASON
+      VALUES ('5','5','3')`).catch(e => {
+        console.log("20", e);
+      }));
       
-      INSERT INTO SEASON 
-      VALUES ('5','6','4');
-      
-      
-      INSERT INTO EPISODE (SEASON_ID,EPISODE_ID,EPISODE_NUM)
-      VALUES ('1','1','1');
-      
-      INSERT INTO EPISODE 
-      VALUES ('1','2','2');
-      
-      INSERT INTO EPISODE
-      VALUES ('1','3','3');
-      
-      INSERT INTO EPISODE 
-      VALUES ('2','4','1');
-      
-      INSERT INTO EPISODE
-      VALUES ('3','5','1');
-      
-      INSERT INTO EPISODE
-      VALUES ('4','6','1');
-      
-      INSERT INTO EPISODE
-      VALUES ('5','7','1');
-      
-      INSERT INTO EPISODE
-      VALUES ('6','8','1');
-      
-      INSERT INTO MOVIE
-      VALUES ('1','THE PURGE','90');
+      promises.push(conn.execute(
+        `INSERT INTO SEASON 
+      VALUES ('5','6','4')`).catch(e => {
+        console.log("21", e);
+      }));
       
       
-      INSERT INTO MOVIE
-      VALUES ('3','wolf of wall street','160');
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE (SEASON_ID,EPISODE_ID,EPISODE_NUM)
+      VALUES ('1','1','1')`).catch(e => {
+        console.log("22", e);
+      }));
       
-      INSERT INTO MOVIE
-      VALUES ('4','django','80');
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE 
+      VALUES ('1','2','2')`).catch(e => {
+        console.log("23", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE
+      VALUES ('1','3','3')`).catch(e => {
+        console.log("24", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE 
+      VALUES ('2','4','1')`).catch(e => {
+        console.log("25", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE
+      VALUES ('3','5','1')`).catch(e => {
+        console.log("26", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE
+      VALUES ('4','6','1')`).catch(e => {
+        console.log("27", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE
+      VALUES ('5','7','1')`).catch(e => {
+        console.log("28", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO EPISODE
+      VALUES ('6','8','1')`).catch(e => {
+        console.log("29", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO MOVIE
+      VALUES ('1','THE PURGE','90')`).catch(e => {
+        console.log("30", e);
+      }));
+      
+      
+      promises.push(conn.execute(
+        `INSERT INTO MOVIE
+      VALUES ('3','wolf of wall street','160')`).catch(e => {
+        console.log("31", e);
+      }));
+      
+      promises.push(conn.execute(
+        `INSERT INTO MOVIE
+      VALUES ('4','django','80')`).catch(e => {
+        console.log("32", e);
+      }));
       
       
       
-      INSERT INTO GENRE
-      VALUES ('1','HORROR');
+      promises.push(conn.execute(
+        `INSERT INTO GENRE
+      VALUES ('1','HORROR')`).catch(e => {
+        console.log("33", e);
+      }));
       
-      INSERT INTO GENRE
-      VALUES ('2', 'ACTION');
+      promises.push(conn.execute(
+        `INSERT INTO GENRE
+      VALUES ('2', 'ACTION')`).catch(e => {
+        console.log("34", e);
+      }));
       
-      INSERT INTO GENRE
-      VALUES ('3','COMEDY');
+      promises.push(conn.execute(
+        `INSERT INTO GENRE
+      VALUES ('3','COMEDY')`).catch(e => {
+        console.log("35", e);
+      }));
       
-      INSERT INTO GENRE
-      VALUES ('4','HALLOWEEN');
+      promises.push(conn.execute(
+        `INSERT INTO GENRE
+      VALUES ('4','HALLOWEEN')`).catch(e => {
+        console.log("36", e);
+      }));
       
-      INSERT INTO GENRE
-      VALUES ('5','CHRISTMAS');
+      promises.push(conn.execute(
+        `INSERT INTO GENRE
+      VALUES ('5','CHRISTMAS')`).catch(e => {
+        console.log("37", e);
+      }));
       
-      INSERT INTO GENRE
-      VALUES ('6','THRILLER')
+      promises.push(conn.execute(
+        `INSERT INTO GENRE
+      VALUES ('6','THRILLER')`).catch(e => {
+        console.log("38", e);
+      }));
       
-      INSERT INTO GENRE 
-      VALUES ('7','DRAMA')
+      promises.push(conn.execute(
+        `INSERT INTO GENRE 
+      VALUES ('7','DRAMA')`).catch(e => {
+        console.log("39", e);
+      }));
       
       
-      INSERT INTO FEATURES 
-      VALUES ('1','1');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES 
+      VALUES ('1','1')`).catch(e => {
+        console.log("40", e);
+      }));
       
-      INSERT INTO FEATURES
-      VALUES ('2','3');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES
+      VALUES ('2','3')`).catch(e => {
+        console.log("41", e);
+      }));
       
-      INSERT INTO FEATURES
-      VALUES ('6','1');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES
+      VALUES ('6','1')`).catch(e => {
+        console.log("42", e);
+      }));
       
-      INSERT INTO FEATURES
-      VALUES ('7','3');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES
+      VALUES ('7','3')`).catch(e => {
+        console.log("43", e);
+      }));
       
-      INSERT INTO FEATURES
-      VALUES('3','3');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES
+      VALUES('3','3')`).catch(e => {
+        console.log("44", e);
+      }));
       
-      INSERT INTO FEATURES
-      VALUES ('2','4');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES
+      VALUES ('2','4')`).catch(e => {
+        console.log("45", e);
+      }));
       
-      INSERT INTO FEATURES
-      VALUES ('3','5');
+      promises.push(conn.execute(
+        `INSERT INTO FEATURES
+      VALUES ('3','5')`).catch(e => {
+        console.log("46", e);
+      }));
       
-      INSERT INTO POINTOFSALE
-      VALUES ('1','MARIO','1','VISA',DATE'2021-07-01');
+      promises.push(conn.execute(
+        `INSERT INTO POINTOFSALE
+      VALUES ('1','MARIO','1','VISA',DATE'2021-07-01')`).catch(e => {
+        console.log("47", e);
+      }));
       
-      INSERT INTO PRICE
-      VALUES ('1', '5.00');
+      promises.push(conn.execute(
+        `INSERT INTO PRICE
+      VALUES ('1', '5.00')`).catch(e => {
+        console.log("48", e);
+      }));
       
-      INSERT INTO PRICE
-      VALUES ('3', '7.00');
+      promises.push(conn.execute(
+        `INSERT INTO PRICE
+      VALUES ('3', '7.00')`).catch(e => {
+        console.log("49", e);
+      }));
       
-      INSERT INTO PRICE
-      VALUES ('4', '4.00');
+      promises.push(conn.execute(
+        `INSERT INTO PRICE
+      VALUES ('4', '4.00')`).catch(e => {
+        console.log("50", e);
+      }));
       
-      INSERT INTO OWN_PERIOD
-      VALUES(DATE'2021-07-01', StartDate+14);
+      promises.push(conn.execute(
+        `INSERT INTO OWN_PERIOD
+      VALUES(DATE '2021-07-01', DATE '2021-07-15')`).catch(e => {
+        console.log("51", e);
+      }));
       
+      await Promise.all(promises);
 
-      `
-    )
-
-    console.log(result.rows[0])
     res.send("populated sucessfully ")
   } catch (err) {
     console.log('Ouch!', err)
@@ -311,8 +483,7 @@ app.put('/createTables', async (req, res) => {
                     Season_id VARCHAR2(30) REFERENCES SEASON(Season_id)
                                                                     ON DELETE CASCADE,
                     Episode_id VARCHAR2(30) PRIMARY KEY,
-                    Episode_Num VARCHAR2(30),
-                    Episode_Name VARCHAR2(30)
+                    Episode_Num VARCHAR2(30)
                 )
                 `).catch(e => {
                   console.log("episode", e);

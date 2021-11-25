@@ -2,16 +2,17 @@ import logo from './logo.svg';
 import './App.css';
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import axios from 'axios';
+import { useState } from 'react';
+import { useEffect} from 'react';
 
 function App() {
-  let titles = [];
-  async function componentDidMount() {
-    try {
-       this.titles = await axios.get("http://localhost:3010/getTitles");
-      } catch (err){
-        console.log(err);
-      }
-  }
+  const [titles, setTitles] = useState([]);
+
+  // useEffect( async() => {
+  //   titles = await axios.get("http://localhost:3010/getTitles)")
+  //   setTitles(titles);
+  // });
+
 
   async function createTables() {
     try {
@@ -70,23 +71,23 @@ function App() {
           <Button colorScheme="teal" variant="outline" onClick={dropTables} >Query Tables</Button>
         </div>
       </header>
-      <body>
+        <div className="main">
 
-      {titles.map(title=> (
-<div>
-<img src={title.art}/>
-<h5>{title.Title_Name}</h5>
-</div>
+        {titles.map(title=> (
+          <div>
+            <img src={title.art}/>
+            <h5>{title.TitleName}</h5>
+          </div>
 
-      ))}
+        ))}
 
-
-        <h5>Wolf Of Wall Street</h5>
-        <h5>Django</h5>
-        <h5>The Purge</h5>
-        <h5>South Park</h5>
-        <h5>simpsons</h5>
-      </body>
+          {titles}
+          <h5>Wolf Of Wall Street</h5>
+          <h5>Django</h5>
+          <h5>The Purge</h5>
+          <h5>South Park</h5>
+          <h5>simpsons</h5>
+      </div>
     </div>
   );
 }
