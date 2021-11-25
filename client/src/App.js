@@ -15,12 +15,22 @@ function App() {
   
   }
 
+  async function dropTables() {
+    try {
+      const response = await axios.post("http://localhost:3010/drop",{});
+      console.log(response);
+    } catch (err){
+      console.log(err);
+    }
+  
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>ONLINE MOVIE STORE</h1>
         <Button colorScheme="teal" variant="outline" onClick={createTables} >Create Tables</Button>
-        
+        <Button colorScheme="teal" variant="outline" onClick={dropTables} >Drop Tables</Button>
       </header>
     </div>
   );
