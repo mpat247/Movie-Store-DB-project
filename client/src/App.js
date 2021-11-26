@@ -6,12 +6,16 @@ import { useState } from 'react';
 import { useEffect} from 'react';
 
 function App() {
-  const [titles, setTitles] = useState([]);
+  const [titles, setTitles] = useState(null);
 
-  // useEffect( async() => {
-  //   titles = await axios.get("http://localhost:3010/getTitles)")
-  //   setTitles(titles);
-  // });
+  useEffect( async() => {
+    if (!titles){
+      setTitles([]);
+      let newtitles = await axios.get("http://localhost:3010/getTitles");
+      console.log(newtitles);
+      setTitles(newtitles.data);
+    } 
+  });
 
 
   async function createTables() {
@@ -61,7 +65,7 @@ function App() {
           <Button colorScheme="teal" variant="outline" onClick={dropTables} >Drop Tables</Button>
         </div>
         <div className="title">
-          <h1>ψ ☠̶̧̢̻̯̞̹̠͙̜̗̞͖̤̦͍̯̫͓̣̰̯̦̳̗̹̳͍͕͔̜̖̤̱̺̥̙̤̬̟̬͚͍̬̌̂̿́͜ͅ ̶̠̈́̇̔͂̊̌͋̋́͆̈́͛̂̆̾̓̍̅̀̽͑̌̅̀͒̔͒́̒͋͛̄͗͆͑͂̕͠͝͝ŏ̷̫̫̿̍̍͜ņ̶̡̧̛̬̲͉̖͈̗̟͕̮̲͇̳͈͇̘͉̼̜̙͚̮̰͍̠̩͋͐̑̆̀͌̋̀͐̀̏͗̏͑̒̋̆̆̏̌͒̐͐̕̕͜͝͝ļ̸̢̛̻͉̝̼͙͔͎̤̞̹͆̓̋̓͒̌͑́̄̄̓͑̓́̃̈̏̉̄̈̂̒̂̆̎̋̈̓͗̎́̒̽̈́͂́͗́͘͘͘͠͝͝ȋ̸̡̢̡̡̧̨̨̨̛̛̱̯̯̦̩͍̻̻̘̺̠̬͇͚̝͉̺͈̜̹̝̦͖͕̰̙̫͇͌̒͒̓̾̑́̂̽̋͛̍̎̅̂̉͒͊̓̄̇̃͋̓̊̓̌͗̍̆͂̕̚͠͝͠͠͝n̸̡̨̛͕͈̜̮͇̳̜͓͓̞̙̻͇͙̦̯̝̬̼̬͂̍͑̉͛̅͗͒̀̉̅̊̎̄͐̃́̌̊̑̇̿̅̎̽̓͗͂͗͊̍̀͆̆̎̎̄́̊͛̃͘̕͝͝͝͝ͅe̴̡̧̫̳̖͖̖̩̺̙̯͎͈̪̼͙͎͋͑̀̑̔͆̋̉̏̿̐͊̿͆̏͐̈́̃̑̊̑͊̋̐̌̀͋̓̔̐̋̑̂͌̿͘̚͜͠͝͝͝͠ ̷̧̨̨̼̭̺̠̫͖̗̼̖͇̞̼̣̰͍̘̜̬̟̠̼͇̤̙̮̘̝͙̹̫̻͙̜̦̦̼͋̒̏̿̀̾̓̈́́̚͜͝m̸̱̖͉̠̪͖͔̼̥͕͔͉̥͔͇̮͕̠̝̤̹͈̙̦͈͉͙̾̇̊̆̓̽̅̈͋̿̇̊͝ͅͅő̴̡̨͎̞͎͚̪̣͖͍͍͇̭͇̱̲̣̪̼͙̮̤̙̺̩͆͗̂̄͒̈̍͜͜͠͠͠ͅv̶̡͉͇͇̟͚̬͔͙͒̏͐̉̓̀͊̉̾̈͆̋́̉͛͗͆͒͑͑̅͑̈̓̓̐̑̈́̽̈̄̾̈́̌͌́́̋̉̃͑̚͝͠͝ͅì̶̛̮͍̬͕̝̜̗̜̺̠̘̼̬͂̅̎̀̈́̇̏̓̔͐̑͗̄̑̂͒͂̂͜ę̶̧̧̡̨̛̛͇̪̫͎͚̮͉̰͉͖̞̟͕̙̫̫͍͖̠͙͎̯̪̹̈͂̋̀̈̒̿͑͌͗̊͋̋́̒̑́͗͋́̉̿̔͋͌̆́͌͂̿̈́̈́̋͒̐̈́̔̿̿̔͒͛͑̃̋̌ͅ ̵̧̧̧̛̳̰͉̻͈̝͚͎̰̟̫̖̣̥̋̓͐́̊͆̀̒̃̔̓̎̾̊̈́̀̆̿͊͛̊̔̍̄̈́́̌̓͘̕͘ͅs̵̛̼̱̠͚̝͙̰̓̅͋̓́̂̄̒̌̉̿̿͌̑͛̓̇̒̃̇̀͊̀̉̆̾̈̀́̕t̶̢̨̡̢̧̳͕͈͎̫̺̠̜̠̙̺͙̳͇̰͙̼̘͎̮̥̥̙̩͙̜̥͍̱͈̹͖̳̱̫̯͇́͌̌̂͆̌͂̋̈́͒͌͊̈̃̀̒̀͋̌̌͊̌͒̈́̀̔͑̉̎͂̿̈̋̈́̋͘͘͝ͅớ̷̭̲̥̪͖̙̠̮̯̀̐͐͑̂̿̂͑̋̽̓̎͛̈̒̓̈̇̈́͂́̾̋̈̐̀̿͊͘̕͘͜͜͝r̶̨̡̜̝̼̘͍̰̻͎̝̺̠̯̯͙̹͍̰̗͌̉͌͑̇͜ͅe̶̡̡̡̯̲̫̮̭̝͕͍͎͍̬̖̲̼͎̘̘͙̺͉̗͎̻͔̻̝̣̜̪̘̞̓̒͊̕͜ͅ ̸̮̻͂͊̔̇͋͑̍̄́̚͘͘͜͝⛥̸̱̙͔͖̘͖͎͂̕͜͜ͅ ψ</h1>
+          <h1>Online Movie </h1>
         </div>
         <div className="menu">
           <Button colorScheme="teal" variant="outline" onClick={populateTables} >Populate Tables</Button>
@@ -73,7 +77,7 @@ function App() {
       </header>
         <div className="main">
 
-        {titles.map(title=> (
+        {titles?.map(title=> (
           <div>
             <img src={title.art}/>
             <h5>{title.TitleName}</h5>

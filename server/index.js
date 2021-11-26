@@ -100,35 +100,35 @@ app.put('/populateTables', async (req, res) => {
       
       promises.push(conn.execute(
         `INSERT INTO TITLE 
-      VALUES ('1','The Purge',2012)`).catch(e => {
+      VALUES ('1','The Purge', '')`).catch(e => {
         console.log("4", e);
       }));
       
       promises.push(conn.execute(
         `INSERT INTO TITLE 
       VALUES
-      ('2','south park', 2002)`).catch(e => {
+      ('2','south park', '')`).catch(e => {
         console.log("5", e);
       }));
       
       promises.push(conn.execute(
         `INSERT INTO TITLE 
       VALUES
-      ('3','wolf of wall street', 2017)`).catch(e => {
+      ('3','wolf of wall street', '')`).catch(e => {
         console.log("6", e);
       }));
       
       promises.push(conn.execute(
         `INSERT INTO TITLE 
       VALUES
-      ('4','django',2011)`).catch(e => {
+      ('4','django','')`).catch(e => {
         console.log("7", e);
       }));
       
       promises.push(conn.execute(
         `INSERT INTO TITLE 
       VALUES
-      ('5','simpsons',1999)`).catch(e => {
+      ('5','simpsons','')`).catch(e => {
         console.log("8", e);
       }));
       
@@ -406,10 +406,10 @@ app.put('/populateTables', async (req, res) => {
 
     res.send("populated sucessfully ")
   } catch (err) {
-    console.log('Ouch!', err)
+    console.log('its here!', err)
   } finally {
     if (conn) { // conn assignment worked, need to close
-      await conn.close()
+     // await conn.close()
 
     }
   }
@@ -417,10 +417,11 @@ app.put('/populateTables', async (req, res) => {
 
 app.put('/createTables', async (req, res) => {
 
-        conn = await oracledb.getConnection(config)
+        
 
         let promises = []
-
+        try{
+        conn = await oracledb.getConnection(config)
         promises.push(conn.execute(
           `CREATE TABLE CUSTOMER(
                     User_Name VARCHAR2(25) PRIMARY KEY,
@@ -565,25 +566,19 @@ app.put('/createTables', async (req, res) => {
                 `).catch(e => {
                   console.log("feat", e);
                 }));
-    
+
     
                 await Promise.all(promises);
-
+                res.send("Creation sucess");
+              } catch (err) {
+                console.log('its here!', err)
+              } finally {
+                if (conn) { // conn assignment worked, need to close
+                  //await conn.close()
             
-           
+                }
+              }
 
-        
-    
-                await conn.close()
-       
-       
-                res.send("created tables sucessfully")
-       
-         
-          
-        
-      
-    
   })
 
 app.get('/getTitles', async (req, res) => {
@@ -603,12 +598,12 @@ app.get('/getTitles', async (req, res) => {
     console.log('Ouch!', err)
   } finally {
     if (conn) { // conn assignment worked, need to close
-      await conn.close()
+     // await conn.close()
 
     }
   }
 
-  res.send()
+
 })
 
 app.listen(port, () => {
