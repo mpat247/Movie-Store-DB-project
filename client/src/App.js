@@ -13,7 +13,7 @@ import Pop from './components/Pop/Pop';
 import Queries from './components/Queries/Queries';
 
 
-
+// the whole page and what is displayed on it and where 
 function App() {
   
  

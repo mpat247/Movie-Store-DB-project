@@ -37,7 +37,9 @@ class Queries extends React.Component {
   render() {
     return (
         <div className="Queries">
+          {/* text box you can enter the sql into  */}
             <Input type="text" value={this.state.value} onChange={this.handleChange} placeholder='input your query here' className="textBox"/>
+            {/* submit query button */}
             <Button leftIcon={<AiOutlineConsoleSql className="component"/>} colorScheme='pink' variant='solid' className="submit-button" onClick={this.sendQuery}>
                 Submit Query
             </Button>

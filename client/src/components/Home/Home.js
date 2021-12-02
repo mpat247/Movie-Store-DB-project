@@ -11,7 +11,7 @@ class Home extends React.Component {
   render() {
     return (
     <div className="HomeScreen">
-    
+    {/* used mapping to check if there was data, if so post it on homescreen, with img type displayed  */}
         {this.state ? this.state?.titles.data.map(ti=> 
         <div className="film-title">
           

@@ -1,3 +1,7 @@
+
+
+// log into oracle db and store connection as a const
+
 const oracledb = require('oracledb')
 oracledb.autoCommit = true;
 const config = {
@@ -11,19 +15,21 @@ const express = require('express')
 const app = express()
 var jsonParser = bodyParser.json()
 const port = 3010
-
+// allow calls from 3000 to 3010 
 var cors = require('cors');
 app.use(cors());
-
+// json parsor is to navigate data passed through variable
 app.post('/Queery', jsonParser, async(req, res) => {
     try {
         conn = await oracledb.getConnection(config)
         console.log(req.body)
+        // pass sql statement in variable to execute command
         const result = await conn.execute(req.body.value)
 
         console.log(result.rows[0])
         res.send(result.rows)
     } catch (err) {
+        // used for debugging and handling exceptions
       res.status(400).send(err)
     }
 
@@ -32,13 +38,14 @@ app.post('/Queery', jsonParser, async(req, res) => {
 app.get('/getTables', async(req, res) => {
     try {
         conn = await oracledb.getConnection(config)
-
+// awaits for sql code to execute 
         const result = await conn.execute(`SELECT 
       table_name
   FROM
       user_tables`, [])
-
+//logs in console 
         console.log(result.rows[0])
+        // posts on webpage
         res.send(result.rows)
     } catch (err) {
         console.log('Ouch!', err)
@@ -67,7 +74,7 @@ app.post('/drop', async(req, res) => {
         promises.push(conn.execute('DROP TABLE TVSHOW CASCADE CONSTRAINTS').catch(e => console.log(e)));
         promises.push(conn.execute('DROP TABLE TITLE CASCADE CONSTRAINTS').catch(e => console.log(e)));
         promises.push(conn.execute('DROP TABLE CONTRIBUTES CASCADE CONSTRAINTS').catch(e => console.log(e)));
-
+//makes array of todo list of sql commands and waits till they are done
         await Promise.all(promises);
         res.send("dropped sucessfully ")
     } catch (err) {
@@ -513,6 +520,7 @@ app.get('/getTitles', async(req, res) => {
 
 })
 
+//launches the webpage and tells you the port that it is listening for commands from 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })

@@ -6,6 +6,7 @@ async function createTables() {
   try {
     const response = await axios.put("http://localhost:3010/createTables",{});
     console.log(response);
+    // "created sucessfully "
     alert(response.data);
   } catch (err){
     console.log(err);
@@ -29,6 +30,7 @@ class Create extends React.Component {
   render() {
     return (
       <div className="create-screen">
+        {/* blank space  */}
         &nbsp;
         &nbsp;
         &nbsp;
