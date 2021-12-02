@@ -1,0 +1,20 @@
+.HomeScreen{
+    display: flex;
+    justify-content: center;
+}
+
+.boxart{
+    width: 13em;
+    align-items: center;
+
+}
+.film-title{
+    font-family: 'Comic Sans', cursive;
+    color: pink;
+
+}
+
+.actualtitle{
+    text-align: center;
+    font-size: 1em;
+}

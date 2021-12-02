@@ -4,94 +4,32 @@ import { Button, ButtonGroup } from "@chakra-ui/react";
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect} from 'react';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Menu from './components/Menu/Menu';
+import Home from './components/Home/Home';
+import Create from './components/Create/Create';
+import Drop from './components/Drop/Drop';
+import Pop from './components/Pop/Pop';
+import Queries from './components/Queries/Queries';
+
+
 
 function App() {
-  const [titles, setTitles] = useState(null);
-
-  useEffect( async() => {
-    if (!titles){
-      setTitles([]);
-      let newtitles = await axios.get("http://localhost:3010/getTitles");
-      console.log(newtitles);
-      setTitles(newtitles.data);
-    } 
-  });
-
-
-  async function createTables() {
-    try {
-      const response = await axios.put("http://localhost:3010/createTables",{});
-      console.log(response);
-      alert(response.data);
-    } catch (err){
-      console.log(err);
-      
-    }
   
-  }
+ 
   
-
-  async function populateTables() {
-    try {
-      const response = await axios.put("http://localhost:3010/populateTables",{});
-      console.log(response);
-      alert(response.data);
-    } catch (err){
-      console.log(err);
-    }
-  
-  }
-
-  async function dropTables() {
-    try {
-      const response = await axios.post("http://localhost:3010/drop",{});
-      console.log(response);
-      alert(response.data);
-    } catch (err){
-      console.log(err);
-    }
-  
-  }
-
   return (
     <div className="App">
-      <header className="App-header">
-        
-        <div className="menu">
-          <Button colorScheme="teal" variant="outline" onClick={createTables} >Create Tables</Button>
-          &nbsp;
-
-          &nbsp;
-          <Button colorScheme="teal" variant="outline" onClick={dropTables} >Drop Tables</Button>
-        </div>
-        <div className="title">
-          <h1>Online Movie </h1>
-        </div>
-        <div className="menu">
-          <Button colorScheme="teal" variant="outline" onClick={populateTables} >Populate Tables</Button>
-          &nbsp;
-
-          &nbsp;
-          <Button colorScheme="teal" variant="outline" onClick={dropTables} >Query Tables</Button>
-        </div>
-      </header>
-        <div className="main">
-
-        {titles?.map(title=> (
-          <div>
-            <img src={title.art}/>
-            <h5>{title.TitleName}</h5>
-          </div>
-
-        ))}
-
-          {titles}
-          <h5>Wolf Of Wall Street</h5>
-          <h5>Django</h5>
-          <h5>The Purge</h5>
-          <h5>South Park</h5>
-          <h5>simpsons</h5>
-      </div>
+     <Router>
+       <Menu/>
+       <Routes>
+         <Route path="/" element={<Home/>}/>
+         <Route path="/Create" element={<Create/>}/>
+         <Route path="/Drop" element={<Drop/>}/>
+         <Route path="/Pop" element={<Pop/>}/>
+         <Route path="/Queries" element={<Queries/>}/>
+       </Routes>
+     </Router>
     </div>
   );
 }
